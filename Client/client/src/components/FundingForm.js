@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import { useCookies } from 'react-cookie';
 import { FaLink, FaDollarSign, FaUser, FaMapMarkerAlt, FaBolt, FaInfoCircle } from 'react-icons/fa';
 import axios from 'axios'; // Make sure to import axios
-
 import E2F from '../assets/E2F.jpg'
+import Green from '../assets/green.gif'
 
 const FundingForm = () => {
 
@@ -21,6 +21,7 @@ const FundingForm = () => {
   const [programs, setProgram] = useState([])
 
   const [cookies, setCookie] = useCookies(['formData']);
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   const sectors = ['Technology', 'Finance', 'Healthcare', 'Manufacturing', 'Other'];
   const employeeCounts = ['1-10', '11-50', '51-100', '101-500', '500+'];
@@ -49,6 +50,7 @@ const FundingForm = () => {
         console.log(response);
         setProgram(response)
         setCookie('formData', response.data);
+        setFormSubmitted(true);
         // Handle success, e.g., redirect to another page
       })
       .catch((error) => {
@@ -194,8 +196,17 @@ const FundingForm = () => {
           </p>
 
         </div>
+        {!formSubmitted && (
+          <div className="w-1/2 p-6">
+            <img
+              src = {Green}// Make sure to provide the correct path to your image
+              alt="E2F Image"
+              className="w-full h-auto"
+            />
+          </div>
+        )}
 
-        {programs.length > 0 && (
+        {formSubmitted && programs.length > 0 && (
           <div className="flex flex-wrap">
             {programs.map((program, index) => (
               <div key={index} className="p-4">
